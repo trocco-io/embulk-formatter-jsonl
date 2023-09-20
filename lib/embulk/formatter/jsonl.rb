@@ -84,7 +84,6 @@ module Embulk
       def finish
         logger = Embulk.logger
         logger.info("DEBUG finish, #{file_output}")
-        logger.info("DEBUG finish, #{file_output.finish}")
         file_output.finish
       end
     end
