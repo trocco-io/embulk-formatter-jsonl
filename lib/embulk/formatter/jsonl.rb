@@ -87,6 +87,13 @@ module Embulk
         logger.info("DEBUG class, #{file_output.size}")
         file_output.finish
       end
+
+      def close
+        logger = Embulk.logger
+        logger.info("DEBUG close, #{file_output}")
+        file_output.close
+      end
+
     end
 
   end
