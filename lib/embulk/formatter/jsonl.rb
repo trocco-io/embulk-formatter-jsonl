@@ -65,7 +65,11 @@ module Embulk
         logger.info("DEBUG page, #{page}")
         page.each do |record|
           logger.info("DEBUG record, #{record}")
+          logger.info("DEBUG current_file, #{@current_file}")
+          logger.info("DEBUG file_output, #{@file_output}")
+          logger.info("DEBUG current_file_size, #{@current_file_size}")
           if @current_file == nil || @current_file_size > 32*1024
+            logger.info("DEBUG next_file, #{file_output.next_file}")
             @current_file = file_output.next_file
             @current_file_size = 0
           end
@@ -78,6 +82,8 @@ module Embulk
       end
 
       def finish
+        logger.info("DEBUG finish, #{file_output}")
+        logger.info("DEBUG finish, #{file_output.finish}")
         file_output.finish
       end
     end
