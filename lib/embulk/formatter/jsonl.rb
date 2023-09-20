@@ -64,8 +64,6 @@ module Embulk
         logger = Embulk.logger
         logger.info("DEBUG page, #{page}")
 
-        return if page.empty?
-
         page.each do |record|
           logger.info("DEBUG record, #{record}")
           logger.info("DEBUG current_file, #{@current_file}")
