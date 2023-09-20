@@ -84,7 +84,6 @@ module Embulk
         logger = Embulk.logger
         logger.info("DEBUG finish, #{file_output}")
         logger.info("DEBUG class, #{file_output.class}")
-        logger.info("DEBUG class, #{file_output.size}")
         file_output.finish
       end
 
