@@ -63,6 +63,9 @@ module Embulk
       def add(page)
         logger = Embulk.logger
         logger.info("DEBUG page, #{page}")
+
+        return if page.empty?
+
         page.each do |record|
           logger.info("DEBUG record, #{record}")
           logger.info("DEBUG current_file, #{@current_file}")
@@ -84,13 +87,18 @@ module Embulk
         logger = Embulk.logger
         logger.info("DEBUG finish, #{file_output}")
         logger.info("DEBUG class, #{file_output.class}")
-        file_output.finish
+        logger.info("DEBUG current_file, #{@current_file == nil}")
+
+        file_output.finish if @current_file
       end
 
       def close
         logger = Embulk.logger
         logger.info("DEBUG close, #{file_output}")
-        file_output.close
+        logger.info("DEBUG current_file, #{@current_file}")
+        logger.info("DEBUG current_file, #{@current_file == nil}")
+
+        file_output.close if @current_file
       end
 
     end
