@@ -86,6 +86,10 @@ module Embulk
         logger.info("DEBUG finish, #{file_output}")
         file_output.finish
       end
+
+      def close
+        file_output.close
+      end
     end
 
   end
