@@ -71,12 +71,15 @@ module Embulk
           @schema.each do |col|
             datum[col.name] = @json_columns.include?(col.name) ? JrJackson::Json.load(record[col.index]) : record[col.index]
           end
-          @current_file.write "#{JrJackson::Json.dump(datum, @opts )}#{@newline}".encode(@encoding)
+
+          data_str = "#{JrJackson::Json.dump(datum, @opts)}#{@newline}".encode(@encoding)
+          @current_file.write data_str
+          @current_file_size += data_str.bytesize
         end
       end
 
       def finish
-        file_output.finish
+        file_output.finish unless @current_file.nil?
       end
     end
 
