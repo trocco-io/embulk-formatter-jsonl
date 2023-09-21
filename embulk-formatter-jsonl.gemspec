@@ -1,7 +1,7 @@
 
 Gem::Specification.new do |spec|
   spec.name          = "embulk-formatter-jsonl"
-  spec.version       = "0.1.4.trocco.0.0.Beta1"
+  spec.version       = "0.1.4.trocco.0.0.1"
   spec.authors       = ["TAKEI Yuya"]
   spec.summary       = "Jsonl formatter plugin for Embulk"
   spec.description   = "Formats Embulk Formatter Jsonl files for other file output plugins."
