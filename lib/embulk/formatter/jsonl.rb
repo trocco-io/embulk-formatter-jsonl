@@ -68,7 +68,7 @@ module Embulk
           logger.info("DEBUG record, #{record}")
           logger.info("DEBUG current_file, #{@current_file}")
           logger.info("DEBUG current_file_size, #{@current_file_size}")
-          if @current_file == nil || @current_file_size > 32*1024
+          if @current_file.nil? || @current_file_size > 32*1024
             logger.info("DEBUG next_file, #{file_output.next_file}")
             @current_file = file_output.next_file
             @current_file_size = 0
@@ -77,7 +77,10 @@ module Embulk
           @schema.each do |col|
             datum[col.name] = @json_columns.include?(col.name) ? JrJackson::Json.load(record[col.index]) : record[col.index]
           end
-          @current_file.write "#{JrJackson::Json.dump(datum, @opts )}#{@newline}".encode(@encoding)
+
+          data_str = "#{JrJackson::Json.dump(datum, @opts)}#{@newline}".encode(@encoding)
+          @current_file.write data_str
+          @current_file_size += data_str.bytesize
         end
       end
 
@@ -87,18 +90,8 @@ module Embulk
         logger.info("DEBUG class, #{file_output.class}")
         logger.info("DEBUG current_file, #{@current_file == nil}")
 
-        file_output.finish if @current_file
+        file_output.finish
       end
-
-      def close
-        logger = Embulk.logger
-        logger.info("DEBUG close, #{file_output}")
-        logger.info("DEBUG current_file, #{@current_file}")
-        logger.info("DEBUG current_file, #{@current_file == nil}")
-
-        file_output.close if @current_file
-      end
-
     end
 
   end
