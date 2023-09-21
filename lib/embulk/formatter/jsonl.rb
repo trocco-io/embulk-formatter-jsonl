@@ -90,7 +90,7 @@ module Embulk
         logger.info("DEBUG class, #{file_output.class}")
         logger.info("DEBUG current_file, #{@current_file == nil}")
 
-        file_output.finish
+        file_output.finish unless @current_file.nil?
       end
     end
 
