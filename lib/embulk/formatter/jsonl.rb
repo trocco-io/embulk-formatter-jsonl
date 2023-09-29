@@ -62,7 +62,7 @@ module Embulk
 
         puts "Reach init"
         puts file_output
-        puts file_output.next_file
+        puts task
       end
 
       def close
