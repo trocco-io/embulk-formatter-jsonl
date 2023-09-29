@@ -87,6 +87,7 @@ module Embulk
 
       def finish
         puts "finish"
+        puts @current_file
         file_output.finish unless @current_file.nil?
       end
     end
