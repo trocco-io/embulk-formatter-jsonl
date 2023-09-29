@@ -55,6 +55,9 @@ module Embulk
         timezone = task['timezone']
         @opts[:date_format] = date_format if date_format
         @opts[:timezone] = timezone if timezone
+
+        Embulk.logger.info "This is an info log"
+        Embulk.logger.info file_output
       end
 
       def close
