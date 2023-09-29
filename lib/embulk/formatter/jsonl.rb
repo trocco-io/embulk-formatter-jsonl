@@ -1,4 +1,5 @@
 require 'jrjackson'
+require 'securerandom'
 
 module Embulk
   module Formatter
@@ -61,20 +62,24 @@ module Embulk
         @opts[:timezone] = timezone if timezone
 
         puts "Reach init"
+        @instance_id = SecureRandom.uuid
+        puts "Instance ID: #{@instance_id}"
         puts file_output
         puts task
       end
 
       def close
         puts "Reach close"
+        puts "Instance ID: #{@instance_id}"
       end
 
       def add(page)
         puts "add_first"
+        puts "Instance ID: #{@instance_id}"
         puts page
         # output code:
         page.each do |record|
-          if @current_file == nil || @current_file_size > 32*1024
+          if @current_file == nil || @current_file_size > 10
             @current_file = file_output.next_file
             @current_file_size = 0
           end
@@ -86,16 +91,19 @@ module Embulk
           data_str = "#{JrJackson::Json.dump(datum, @opts)}#{@newline}".encode(@encoding)
           @current_file.write data_str
           @current_file_size += data_str.bytesize
+          puts @current_file_size
         end
 
         puts "add_last"
         puts @current_file
+        puts @current_file.class
         puts page
       end
 
       def finish
         puts "finish"
         puts @current_file
+        puts "Instance ID: #{@instance_id}"
         file_output.finish unless @current_file.nil?
       end
     end
