@@ -70,7 +70,8 @@ module Embulk
       end
 
       def add(page)
-        puts "add"
+        puts "add_first"
+        puts page
         # output code:
         page.each do |record|
           if @current_file == nil || @current_file_size > 32*1024
@@ -83,6 +84,14 @@ module Embulk
           end
           @current_file.write "#{JrJackson::Json.dump(datum, @opts)}#{@newline}".encode(@encoding)
         end
+
+        data_str = "#{JrJackson::Json.dump(datum, @opts)}#{@newline}".encode(@encoding)
+        @current_file.write data_str
+        @current_file_size += data_str.bytesize
+
+        puts "add_last"
+        puts @current_file
+        puts page
       end
 
       def finish
