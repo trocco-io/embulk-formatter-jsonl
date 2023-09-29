@@ -17,7 +17,9 @@ module Embulk
       }
 
       def self.join_texts((*inits,last), opt = {})
-        delim = opt[:delimiter] || ', '
+      @logger.info "Reach join_texts"
+
+      delim = opt[:delimiter] || ', '
         last_delim = opt[:last_delimiter] || ' or '
         [inits.join(delim),last].join(last_delim)
       end
@@ -38,6 +40,8 @@ module Embulk
         newline = task['newline'].upcase
         raise "newline must be one of #{join_texts(NEWLINES.keys)}" unless NEWLINES.has_key?(newline)
 
+        @logger.info "Reach transaction"
+
         yield(task)
       end
 
@@ -56,14 +60,18 @@ module Embulk
         @opts[:date_format] = date_format if date_format
         @opts[:timezone] = timezone if timezone
 
-        Embulk.logger.info "This is an info log"
-        Embulk.logger.info file_output
+        @logger = Embulk.logger
+
+        @logger.info "Reach init"
+        @logger.info file_output
+        @logger.info file_output.next_file
       end
 
       def close
       end
 
       def add(page)
+        @logger.info "add"
         # output code:
         page.each do |record|
           if @current_file == nil || @current_file_size > 32*1024
@@ -79,6 +87,7 @@ module Embulk
       end
 
       def finish
+        @logger.info "finish"
         file_output.finish unless @current_file.nil?
       end
     end
