@@ -40,6 +40,7 @@ module Embulk
         newline = task['newline'].upcase
         raise "newline must be one of #{join_texts(NEWLINES.keys)}" unless NEWLINES.has_key?(newline)
 
+        @logger = Embulk.logger
         @logger.info "Reach transaction"
 
         yield(task)
@@ -68,6 +69,7 @@ module Embulk
       end
 
       def close
+        @logger.info "Reach close"
       end
 
       def add(page)
